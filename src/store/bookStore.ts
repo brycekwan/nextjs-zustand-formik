@@ -1,14 +1,31 @@
-import { create } from "zustand";
+import { createStore } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
-type BookStore = {
+export type BookState = {
   searchTerms: string[];
+};
+
+export type BookStoreActions = {
   addSearchTerm: (term: string) => void;
 };
 
-const useBookStore = create<BookStore>((set) => ({
-  searchTerms: [],
-  addSearchTerm: (term: string) =>
-    set((state) => ({ searchTerms: [...state.searchTerms, term] })),
-}));
+export type BookStore = BookState & BookStoreActions;
 
-export default useBookStore;
+export const initialState: BookState = {
+  searchTerms: [],
+};
+
+export const createBookStore = (initState: BookState = initialState) => {
+  return createStore<BookStore>()(
+    persist(
+      (set) => ({
+        ...initState,
+        addSearchTerm: (term: string) =>
+          set((state) => ({ searchTerms: [...state.searchTerms, term] })),
+      }),
+      { name: "book-storage", storage: createJSONStorage(() => sessionStorage) }
+    )
+  );
+};
+
+export default createBookStore;

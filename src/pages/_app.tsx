@@ -11,19 +11,31 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
 import { ThemeProvider } from "@mui/material";
 import theme from "@/theme";
+import { BookStoreStoreProvider } from "@/providers/bookStoreProvider";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 1000 * 60 * 5,
+          },
+        },
+      })
+  );
 
   return (
     <AppCacheProvider>
       <ThemeProvider theme={theme}>
-        <QueryClientProvider client={queryClient}>
-          <HydrationBoundary state={pageProps.dehydratedState}>
-            <Component {...pageProps} />
-          </HydrationBoundary>
-          <ReactQueryDevtools />
-        </QueryClientProvider>
+        <BookStoreStoreProvider>
+          <QueryClientProvider client={queryClient}>
+            <HydrationBoundary state={pageProps.dehydratedState}>
+              <Component {...pageProps} />
+            </HydrationBoundary>
+            <ReactQueryDevtools />
+          </QueryClientProvider>
+        </BookStoreStoreProvider>
       </ThemeProvider>
     </AppCacheProvider>
   );

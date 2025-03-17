@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Box, TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useFormik } from "formik";
-import useBookStore from "@/store/bookStore";
+import { useBookStore } from "@/providers/bookStoreProvider";
 
 type SearchForm = {
   searchTerms: string;
@@ -14,7 +14,9 @@ type SearchForm = {
 export default function Books() {
   const [searchTerms, setSearchTerms] = useState("");
   const { data, isLoading } = useBooks({ searchTerms });
-  const bookStore = useBookStore();
+  const { addSearchTerm, searchTerms: stateSearchTerms } = useBookStore(
+    (state) => state
+  );
 
   const formik = useFormik<SearchForm>({
     initialValues: {
@@ -23,7 +25,7 @@ export default function Books() {
     onSubmit: (values) => {
       console.log(values);
       setSearchTerms(values.searchTerms);
-      bookStore.addSearchTerm(values.searchTerms);
+      addSearchTerm(values.searchTerms);
     },
   });
 
@@ -60,7 +62,7 @@ export default function Books() {
       <Box marginBottom={2}>
         <Typography>Search History:</Typography>
         <Box component="ul">
-          {bookStore.searchTerms.map((term) => (
+          {stateSearchTerms.map((term) => (
             <Typography key={term} component="li">
               {term}
             </Typography>
