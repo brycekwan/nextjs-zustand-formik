@@ -2,7 +2,7 @@ import { Container, Typography } from "@mui/material";
 import TopMenu from "@/components/TopMenu/TopMenu";
 import useBooks from "@/hooks/api/useBooks";
 import { useState } from "react";
-import { Box, TextField, InputAdornment } from "@mui/material";
+import { Box, TextField, InputAdornment, Link } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useFormik } from "formik";
 import { useBookStore } from "@/providers/bookStoreProvider";
@@ -85,7 +85,20 @@ export default function Books() {
         <Box component={"ol"}>
           {data?.map((book) => (
             <li key={book.key}>
-              {book.title} - {book.author_name?.join(", ")}
+              {book.title}
+              {book.author_name &&
+                book.author_name.map((name, index) => {
+                  return (
+                    <Link
+                      marginLeft="5px"
+                      marginRight="5px"
+                      key={book.author_key?.[index]}
+                      href={`/authors/${book.author_key?.[index]}`}
+                    >
+                      {name}
+                    </Link>
+                  );
+                })}
             </li>
           ))}
         </Box>
