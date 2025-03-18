@@ -1,5 +1,6 @@
 import { createStore } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { devtools } from "zustand/middleware";
 
 export type BookState = {
   searchTerms: string[];
@@ -17,13 +18,18 @@ export const initialState: BookState = {
 
 export const createBookStore = (initState: BookState = initialState) => {
   return createStore<BookStore>()(
-    persist(
-      (set) => ({
-        ...initState,
-        addSearchTerm: (term: string) =>
-          set((state) => ({ searchTerms: [...state.searchTerms, term] })),
-      }),
-      { name: "book-storage", storage: createJSONStorage(() => sessionStorage) }
+    devtools(
+      persist(
+        (set) => ({
+          ...initState,
+          addSearchTerm: (term: string) =>
+            set((state) => ({ searchTerms: [...state.searchTerms, term] })),
+        }),
+        {
+          name: "book-storage",
+          storage: createJSONStorage(() => sessionStorage),
+        }
+      )
     )
   );
 };
