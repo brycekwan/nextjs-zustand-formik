@@ -32,7 +32,9 @@ export default function Books() {
   return (
     <Container>
       <TopMenu />
-      <Typography variant="h1">Books</Typography>
+      <Typography variant="h4" component="h1">
+        Books
+      </Typography>
       <Typography variant="body1" paddingBottom={2}>
         This page shows zustand in action and react query. React query will
         fetch once in the network tab with each unique search term. Reusing the

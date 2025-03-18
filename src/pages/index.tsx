@@ -6,7 +6,9 @@ export default function Home() {
   return (
     <Container>
       <TopMenu />
-      <Typography variant="h1">Sample App</Typography>
+      <Typography variant="h4" component="h1">
+        Sample App
+      </Typography>
       <Typography variant="body1">
         This is a sample NextJS app that uses Zustand for state management and
         Formik for form handling.

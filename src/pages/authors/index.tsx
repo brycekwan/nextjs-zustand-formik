@@ -1,19 +1,20 @@
 import { Container, Typography } from "@mui/material";
 import TopMenu from "@/components/TopMenu/TopMenu";
 import { Formik, Form, Field } from "formik";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, InputAdornment } from "@mui/material";
 import { NumericFormat } from "react-number-format";
 
 export default function Authors() {
   return (
     <Container>
       <TopMenu />
-      <Typography variant="h1">Authors</Typography>
+      <Typography variant="h4" component="h1">Authors</Typography>
       <Typography variant="body1" paddingBottom={2}>
         This is a sample page for authors. It uses Formik and
         react-number-format to comma separate the book count field. On submssion
         the value of the formik form will be the float value of the entered
-        value and not the string value. The values can be inspected in the console.
+        value and not the string value. The values can be inspected in the
+        console.
       </Typography>
       <Formik
         initialValues={{
@@ -54,6 +55,13 @@ export default function Authors() {
                 }}
                 thousandSeparator
                 fullWidth
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">#</InputAdornment>
+                    ),
+                  },
+                }}
               ></NumericFormat>
             </div>
             <Button type="submit" variant="contained">
